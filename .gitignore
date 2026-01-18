@@ -22,3 +22,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Bridge scripts (local FSUIPC development tools)
+bridge/
+
+# Large binary manuals (keep reference files and screenshot)
+manuals/*.pdf
+manuals/*.air
+manuals/*.cfg
+manuals/*.pln
+manuals/*.htm
