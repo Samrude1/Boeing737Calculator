@@ -118,9 +118,9 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({ weatherData, f
     ) : null;
 
     const ResultCard = ({ label, value, unit, color = 'text-sky-400' }: any) => (
-        <div className="bg-slate-900/50 rounded-lg p-4 flex flex-col items-center justify-center border border-slate-800">
-            <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">{label}</span>
-            <span className={`text-4xl font-bold font-mono ${color}`}>{value || '---'}</span>
+        <div className="bg-slate-900/50 rounded-lg p-3 md:p-4 flex flex-col items-center justify-center border border-slate-800">
+            <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1 text-center">{label}</span>
+            <span className={`text-2xl md:text-4xl font-bold font-mono ${color}`}>{value || '---'}</span>
             <span className="text-slate-600 text-xs mt-1">{unit}</span>
         </div>
     );
@@ -131,26 +131,26 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({ weatherData, f
     const descentResults = state.descentResults;
 
     return (
-        <div className="flex flex-col gap-6 animate-in fade-in duration-500 pb-20">
-            <div className="flex items-center justify-between">
-                <div className="flex bg-slate-900 p-1 rounded-lg border border-slate-800">
+        <div className="flex flex-col gap-4 md:gap-6 animate-in fade-in duration-500 pb-20">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex flex-wrap bg-slate-900 p-1 rounded-lg border border-slate-800 gap-1">
                     <button
                         onClick={() => setMode('TAKEOFF')}
-                        className={`px-4 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition-all ${state.mode === 'TAKEOFF' ? 'bg-sky-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
+                        className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold flex items-center gap-1 md:gap-2 transition-all ${state.mode === 'TAKEOFF' ? 'bg-sky-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
                     >
-                        <PlaneTakeoff size={16} /> TAKEOFF
+                        <PlaneTakeoff size={16} /> <span className="hidden sm:inline">TAKEOFF</span><span className="sm:hidden">T/O</span>
                     </button>
                     <button
                         onClick={() => setMode('LANDING')}
-                        className={`px-4 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition-all ${state.mode === 'LANDING' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
+                        className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold flex items-center gap-1 md:gap-2 transition-all ${state.mode === 'LANDING' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
                     >
-                        <PlaneLanding size={16} /> LANDING
+                        <PlaneLanding size={16} /> <span className="hidden sm:inline">LANDING</span><span className="sm:hidden">LND</span>
                     </button>
                     <button
                         onClick={() => setMode('DESCENT')}
-                        className={`px-4 py-2 rounded-md text-sm font-bold flex items-center gap-2 transition-all ${state.mode === 'DESCENT' ? 'bg-purple-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
+                        className={`px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-bold flex items-center gap-1 md:gap-2 transition-all ${state.mode === 'DESCENT' ? 'bg-purple-500 text-white shadow-lg' : 'text-slate-500 hover:text-white'}`}
                     >
-                        <ArrowDown size={16} /> DESCENT
+                        <ArrowDown size={16} /> <span className="hidden sm:inline">DESCENT</span><span className="sm:hidden">DES</span>
                     </button>
                 </div>
             </div>
@@ -165,10 +165,10 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({ weatherData, f
                                 <Input label="Flaps" type="number" value={state.takeoffData.flaps} onChange={e => updateTakeoff({ flaps: Number(e.target.value) as any })} />
                             </div>
                             <Input label="Gross Weight" suffix="LBS" type="number" value={state.takeoffData.weightLbs} onChange={e => updateTakeoff({ weightLbs: Number(e.target.value) })} />
-                            <div className="grid grid-cols-3 gap-3">
-                                <Input label="Wind" placeholder="DIR" type="number" value={state.takeoffData.windDir} onChange={e => updateTakeoff({ windDir: Number(e.target.value) })} />
-                                <Input label="@" placeholder="SPD" type="number" value={state.takeoffData.windSpeed} onChange={e => updateTakeoff({ windSpeed: Number(e.target.value) })} />
-                                <Input label="OAT" suffix="°C" type="number" value={state.takeoffData.oatCelsius} onChange={e => updateTakeoff({ oatCelsius: Number(e.target.value) })} />
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
+                                <Input label="Wind Dir" placeholder="DIR" type="number" value={state.takeoffData.windDir} onChange={e => updateTakeoff({ windDir: Number(e.target.value) })} />
+                                <Input label="Wind Spd" placeholder="SPD" type="number" value={state.takeoffData.windSpeed} onChange={e => updateTakeoff({ windSpeed: Number(e.target.value) })} />
+                                <Input label="OAT" suffix="°C" type="number" value={state.takeoffData.oatCelsius} onChange={e => updateTakeoff({ oatCelsius: Number(e.target.value) })} className="col-span-2 sm:col-span-1" />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Runway Condition</span>
@@ -220,7 +220,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({ weatherData, f
 
                     {/* Wind Components Display */}
                     {currentWindComponents && (
-                        <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-800 flex justify-between items-center text-xs">
+                        <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs">
                             <div className="flex items-center gap-2">
                                 <Wind size={14} className="text-slate-500" />
                                 <span className="text-slate-400 font-bold uppercase">Components</span>
@@ -245,7 +245,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({ weatherData, f
                 <div className="lg:col-span-8 flex flex-col gap-6">
                     <Card title="Calculated Output">
                         {state.mode === 'TAKEOFF' && (
-                            <div className="grid grid-cols-3 gap-6">
+                            <div className="grid grid-cols-3 gap-3 md:gap-6">
                                 <ResultCard label="V1 Decision" value={(activeResults as any)?.v1?.toFixed(0)} unit="KNOTS" color="text-sky-400" />
                                 <ResultCard label="VR Rotate" value={(activeResults as any)?.vr?.toFixed(0)} unit="KNOTS" color="text-green-500" />
                                 <ResultCard label="V2 Safety" value={(activeResults as any)?.v2?.toFixed(0)} unit="KNOTS" color="text-sky-400" />

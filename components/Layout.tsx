@@ -11,7 +11,7 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, currentView, onViewChange, theme, onThemeToggle }) => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false); // Start collapsed on mobile
 
     const NavItem = ({ view, icon: Icon, label }: { view: ViewState | 'SETTINGS'; icon: any; label: string }) => (
         <button
@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onViewCha
     return (
         <div className="flex h-screen bg-slate-950 overflow-hidden text-slate-200 font-sans transition-colors duration-500">
             {/* Sidebar */}
-            <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-20`}>
+            <div className={`${sidebarOpen ? 'w-64' : 'w-16 md:w-20'} bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-20 flex-shrink-0`}>
                 <div className="p-6 flex items-center justify-between border-b border-slate-800/50">
                     {sidebarOpen ? (
                         <div className="flex items-center gap-2 text-sky-400">
@@ -47,7 +47,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onViewCha
                                 {theme === 'day' ? <Moon size={18} /> : <Sun size={18} />}
                             </button>
                         )}
-                        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-slate-500 hover:text-white lg:hidden">
+                        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-slate-500 hover:text-white">
                             <Menu size={20} />
                         </button>
                     </div>
@@ -81,9 +81,9 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onViewCha
             </div>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto relative">
+            <main className="flex-1 overflow-auto relative min-w-0">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-slate-950 pointer-events-none"></div>
-                <div className="relative z-10 p-8 max-w-7xl mx-auto">
+                <div className="relative z-10 p-4 md:p-8 max-w-7xl mx-auto">
                     {children}
                 </div>
             </main>
