@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+  }
+
+  .glass-panel {
+    @apply bg-slate-900/50 backdrop-blur-md border border-slate-800;
+  }
+}
+
+/* Night Mode Overrides */
+.night-mode {
+  --color-slate-950: #0f0505;
+  /* Deep Red Background */
+  --color-slate-900: #1a0a0a;
+  --color-slate-800: #3f1a1a;
+  --color-slate-500: #7f3a3a;
+  --color-slate-400: #9f4a4a;
+  --color-slate-200: #ff8a8a;
+
+  --color-sky-500: #ff4400;
+  /* Amber/Orange */
+  --color-sky-400: #ff5500;
+
+  --color-emerald-500: #ff4400;
+  /* Turn Green to Amber */
+  --color-emerald-400: #ff6600;
+
+  --color-purple-500: #ff3333;
+  /* Turn Purple to Red */
+  --color-purple-400: #ff4444;
+}
+
+.night-mode .bg-slate-950 {
+  background-color: var(--color-slate-950) !important;
+}
+
+.night-mode .bg-slate-900 {
+  background-color: var(--color-slate-900) !important;
+}
+
+.night-mode .border-slate-800 {
+  border-color: var(--color-slate-800) !important;
+}
+
+.night-mode .text-slate-200 {
+  color: var(--color-slate-200) !important;
+}
+
+.night-mode .text-slate-400 {
+  color: var(--color-slate-400) !important;
+}
+
+.night-mode .text-slate-500 {
+  color: var(--color-slate-500) !important;
+}
+
+.night-mode .text-sky-400 {
+  color: var(--color-sky-400) !important;
+}
+
+.night-mode .bg-sky-500\/10 {
+  background-color: rgba(255, 68, 0, 0.15) !important;
+}
+
+.night-mode .border-sky-500\/20 {
+  border-color: rgba(255, 68, 0, 0.3) !important;
+}
+
+.night-mode .text-emerald-400 {
+  color: var(--color-emerald-400) !important;
+}
+
+.night-mode .text-purple-400 {
+  color: var(--color-purple-400) !important;
+}
+
+/* Invert Sim Status Badge to Red */
+.night-mode .bg-emerald-500\/10 {
+  background-color: rgba(255, 68, 0, 0.2) !important;
+  color: #ff8800 !important;
+  border-color: #ff4400 !important;
+}
+
+/* Reduce brightness globally */
+.night-mode img {
+  filter: brightness(0.7) sepia(1) hue-rotate(-50deg) saturate(3);
+}

@@ -1,0 +1,7 @@
+{
+  "name": "SkyGuide B737 Performance Computer",
+  "description": "A high-fidelity performance calculator for the Boeing 737-800 in FSX Steam Edition, featuring takeoff/landing speed calculations, N1 power estimation, and an AI flight briefing system.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
