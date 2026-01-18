@@ -1,6 +1,6 @@
 # SkyGuide B737-800 Performance Computer
 
-![SkyGuide Screenshot](manuals/Näyttökuva%202026-01-18%20183901.png)
+![SkyGuide Screenshot](manuals/Näyttökuva%202026-01-18%20184212.png)
 
 SkyGuide is a professional-grade flight performance calculator designed specifically for flight simulation enthusiasts using Microsoft Flight Simulator. It provides Boeing 737-800 pilots with critical takeoff and landing data, formatted within a modern, aviation-themed interface.
 
