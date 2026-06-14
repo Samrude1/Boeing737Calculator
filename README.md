@@ -143,6 +143,7 @@ Real-time integration with Microsoft Flight Simulator via FSUIPC:
 - **Mapping**: Leaflet 1.9.4 + React Leaflet 5.0.0
 
 ### AI & Intelligence
+- **Architecture**: Secure serverless backend API (`api/`) to protect the API key from public exposure and prevent prompt injection
 - **AI Engine**: Google Gemini API (@google/genai 1.34.0)
   - `gemini-2.0-flash-exp` for weather grounding and chat
   - `gemini-1.5-pro` for complex technical briefings
@@ -211,8 +212,14 @@ GEMINI_API_KEY=your_api_key_here
 
 ### Step 4: Start Development Server
 
+This project uses a secure backend architecture (Vercel Serverless Functions) for AI calls to protect your API key. To run this locally, you must use Vercel CLI instead of Vite's default dev server.
+
 ```bash
-npm run dev
+# Install Vercel CLI globally (only needed once)
+npm install -g vercel
+
+# Start the development server
+vercel dev
 ```
 
 The application will start on `http://localhost:3000` (or the next available port). Open this URL in your browser.
@@ -308,6 +315,10 @@ For real-time integration with Microsoft Flight Simulator:
 
 ```
 b737FMC/
+├── api/                 # Serverless backend functions (Vercel)
+│   ├── briefing.ts            # Flight briefing endpoint
+│   ├── chat.ts                # First Officer AI chat endpoint
+│   └── weather.ts             # METAR weather endpoint
 ├── components/           # React components
 │   ├── AICopilotView.tsx      # AI assistant interface
 │   ├── ChecklistView.tsx      # Interactive checklists
@@ -373,9 +384,9 @@ b737FMC/
 
 ### Development
 ```bash
-npm run dev
+vercel dev
 ```
-Starts the Vite development server on `http://localhost:3000` with hot module replacement.
+Starts the Vercel development server on `http://localhost:3000` with hot module replacement and serverless function support.
 
 ### Production Build
 ```bash

@@ -132,23 +132,39 @@ export const FlightPlanView: React.FC<FlightPlanViewProps> = ({ state, onUpdate 
         // Time & Fuel Estimations
         const timeHours = dist / 440;
 
-        // Use Scalar if available. Base 15lbs/nm for lighter FSX model, 18 for generic.
-        const baseBurn = aircraftConfig ? 15 : 18;
+        // Use Scalar if available. 
+        // Real-world and realistic planners show ~24-25 lbs/nm for the 737-800 including climb/descent.
+        const baseBurn = 25;
         const scalar = aircraftConfig?.fuelFlowScalar || 1.0;
-        const tripFuel = dist * baseBurn * scalar;
+        const taxiFuel = 800; // Standard taxi/APU fuel for FSX 737
+        const tripFuel = (dist * baseBurn * scalar);
 
         const zfw = oew + payload;
         const gw = zfw + fuel;
-        const landingWeight = gw - tripFuel;
+        const landingWeight = gw - (tripFuel + taxiFuel);
+
+        // Required fuel for safety: Trip + Taxi + Reserve
+        const minRequired = Math.round(tripFuel + taxiFuel + 4000);
+
+        // Weight Limits
+        const maxTakeoffWeight = aircraftConfig?.maxGrossWeight || 155500;
+        const maxLandingWeight = aircraftConfig?.maxLandingWeight || 144000;
 
         const results = {
             time: `${Math.floor(timeHours)}h ${Math.round((timeHours % 1) * 60)} m`,
             blockFuel: fuel,
             tripFuel: Math.round(tripFuel),
+            taxiFuel: taxiFuel,
             reserve: 4000,
+            recommended: minRequired,
+            isSufficient: fuel >= minRequired,
             zfw: zfw,
             gw: gw,
-            landingWeight: landingWeight
+            landingWeight: landingWeight,
+            isOverweight: gw > maxTakeoffWeight,
+            isOverLandingWeight: landingWeight > maxLandingWeight,
+            maxGW: maxTakeoffWeight,
+            maxLW: maxLandingWeight
         };
 
         // Push to Global State
@@ -160,12 +176,13 @@ export const FlightPlanView: React.FC<FlightPlanViewProps> = ({ state, onUpdate 
 
     const estimateFuel = () => {
         const dist = Number(state.inputs.dist) || 0;
-        const baseBurn = aircraftConfig ? 15 : 18;
+        const baseBurn = 25;
         const scalar = aircraftConfig?.fuelFlowScalar || 1.0;
         const tripFuel = dist * baseBurn * scalar;
+        const taxiFuel = 800;
 
-        // Match the import logic: Trip + 4000 lbs reserve
-        updateInputs({ fuel: Math.round(tripFuel + 4000).toString() });
+        // Match the import logic: Trip + Taxi + 4000 lbs reserve
+        updateInputs({ fuel: Math.round(tripFuel + taxiFuel + 4000).toString() });
     };
 
     const results = state.results;
@@ -281,7 +298,12 @@ export const FlightPlanView: React.FC<FlightPlanViewProps> = ({ state, onUpdate 
                                 <div className="bg-slate-800/50 p-4 rounded-lg">
                                     <div className="text-xs text-slate-500 uppercase font-bold">Planned Fuel (Block)</div>
                                     <div className="text-xl font-mono text-sky-400">{results.blockFuel.toLocaleString()} <span className="text-xs">LBS</span></div>
-                                    <div className="text-[10px] text-slate-500">Trip: {Math.round(results.blockFuel - 4000).toLocaleString()} | Res: 4,000</div>
+                                    <div className="text-[10px] text-slate-500">Trip: {results.tripFuel.toLocaleString()} | Taxi: {results.taxiFuel?.toLocaleString() || '800'} | Res: {results.reserve.toLocaleString()}</div>
+                                    {!results.isSufficient && (
+                                        <div className="mt-2 text-[10px] text-red-400 bg-red-500/10 px-2 py-1 rounded border border-red-500/20 font-bold animate-pulse">
+                                            ⚠️ INSUFFICIENT FUEL! Recommended: {results.recommended.toLocaleString()} lbs
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="bg-slate-800/50 p-4 rounded-lg">
                                     <div className="text-xs text-slate-500 uppercase font-bold">Est. Time</div>
@@ -292,14 +314,16 @@ export const FlightPlanView: React.FC<FlightPlanViewProps> = ({ state, onUpdate 
                                     <div className="text-xl font-mono text-slate-200">{results.zfw.toLocaleString()} <span className="text-xs">LBS</span></div>
                                     <div className="text-[10px] text-slate-500">(Empty + Payload)</div>
                                 </div>
-                                <div className="bg-slate-800/50 p-4 rounded-lg">
-                                    <div className="text-xs text-slate-500 uppercase font-bold">Est Landing Wgt</div>
-                                    <div className="text-xl font-mono text-purple-400">{results.landingWeight.toLocaleString()} <span className="text-xs">LBS</span></div>
+                                <div className={`bg-slate-800/50 p-4 rounded-lg ${results.isOverLandingWeight ? 'border border-red-500/50 bg-red-500/5' : ''}`}>
+                                    <div className={`text-xs uppercase font-bold ${results.isOverLandingWeight ? 'text-red-400' : 'text-slate-500'}`}>Est Landing Wgt</div>
+                                    <div className={`text-xl font-mono ${results.isOverLandingWeight ? 'text-red-400' : 'text-purple-400'}`}>{results.landingWeight.toLocaleString()} <span className="text-xs">LBS</span></div>
+                                    <div className="text-[10px] text-slate-500">Max: {results.maxLW.toLocaleString()}</div>
                                 </div>
-                                <div className="col-span-2 bg-slate-800/50 p-4 rounded-lg border border-sky-500/30">
-                                    <div className="text-xs text-sky-500 uppercase font-bold">Gross Weight (Takeoff)</div>
-                                    <div className="text-2xl font-mono text-white font-bold">{results.gw.toLocaleString()} <span className="text-xs">LBS</span></div>
-                                    <div className="text-[10px] text-slate-500">Sent to Performance Calculator</div>
+                                <div className={`col-span-2 bg-slate-800/50 p-4 rounded-lg border ${results.isOverweight ? 'border-red-500 bg-red-500/10' : 'border-sky-500/30'}`}>
+                                    <div className={`text-xs uppercase font-bold ${results.isOverweight ? 'text-red-400' : 'text-sky-500'}`}>Gross Weight (Takeoff)</div>
+                                    <div className={`text-2xl font-mono font-bold ${results.isOverweight ? 'text-red-400' : 'text-white'}`}>{results.gw.toLocaleString()} <span className="text-xs">LBS</span></div>
+                                    <div className="text-[10px] text-slate-500">{results.isOverweight ? '⚠️ EXCEEDS MAXIMUM TAKEOFF WEIGHT' : 'Sent to Performance Calculator'}</div>
+                                    <div className="text-[10px] text-slate-500">Max MTOW: {results.maxGW.toLocaleString()}</div>
                                 </div>
                             </div>
                             <div className="text-xs text-slate-600 font-mono px-2">

@@ -32,7 +32,8 @@ export const usePerformance = () => {
         setLoading(true);
         try {
             const weightFactor = (data.landingWeightLbs - 100000) / 10000;
-            const vref = (data.flaps === 30 ? 136 : 131) + weightFactor * 1.4;
+            // Increased base values by 3kts to compensate for FSX default flight model quirks
+            const vref = (data.flaps === 30 ? 139 : 134) + weightFactor * 1.4;
             const vapp = vref + Math.min(20, Math.max(5, data.windSpeed / 2));
 
             // Briefing

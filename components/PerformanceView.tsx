@@ -253,9 +253,14 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({ weatherData, f
                         )}
 
                         {state.mode === 'LANDING' && (
-                            <div className="grid grid-cols-2 gap-6">
-                                <ResultCard label={`VREF ${state.landingData.flaps}`} value={(activeResults as any)?.vref?.toFixed(0)} unit="KNOTS" color="text-emerald-400" />
-                                <ResultCard label="VAPP Target" value={(activeResults as any)?.vapp?.toFixed(0)} unit="KNOTS" color="text-white" />
+                            <div className="flex flex-col gap-4">
+                                <div className="grid grid-cols-2 gap-6">
+                                    <ResultCard label={`VREF ${state.landingData.flaps}`} value={(activeResults as any)?.vref?.toFixed(0)} unit="REF SPEED" color="text-slate-400" />
+                                    <ResultCard label="VAPP Target" value={(activeResults as any)?.vapp?.toFixed(0)} unit="FLY THIS SPEED" color="text-emerald-400" />
+                                </div>
+                                <div className="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded text-[10px] text-emerald-400 font-bold uppercase tracking-widest text-center">
+                                    Maintain VAPP ({Math.round((activeResults as any)?.vapp || 0)} kts) until threshold for safety margin
+                                </div>
                             </div>
                         )}
 

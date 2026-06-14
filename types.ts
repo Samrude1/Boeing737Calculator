@@ -109,7 +109,14 @@ export interface FlightPlanState {
     time: string;
     blockFuel: number;
     tripFuel: number;
+    taxiFuel: number;
     reserve: number;
+    recommended: number;
+    isSufficient: boolean;
+    isOverweight: boolean;
+    isOverLandingWeight: boolean;
+    maxGW: number;
+    maxLW: number;
     zfw: number;
     gw: number;
     landingWeight: number;

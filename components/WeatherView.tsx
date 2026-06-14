@@ -135,6 +135,22 @@ export const WeatherView: React.FC<WeatherViewProps> = ({ state, onUpdate, defau
                         unit="HPA"
                         color="text-purple-400"
                     />
+
+                    {/* Icing Warning for FSX */}
+                    {(data.temp <= 10 && data.temp >= -15) && (
+                        <div className="col-span-full mt-4 bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl flex flex-col sm:flex-row items-center gap-4 animate-pulse">
+                            <div className="p-3 bg-amber-500/20 rounded-full text-amber-500">
+                                <AlertTriangle size={24} />
+                            </div>
+                            <div className="flex-1 text-center sm:text-left">
+                                <h4 className="font-bold text-amber-400 uppercase tracking-tight text-sm">FSX Icing Danger detected</h4>
+                                <p className="text-xs text-amber-200/70 leading-relaxed mt-1">
+                                    Current temp ({data.temp}°C) is in the critical icing range for FSX.
+                                    If flying through clouds (visible moisture), you **MUST** engage **Engine Anti-Ice** and **Pitot Heat** to prevent total engine flameout or instrument failure.
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 

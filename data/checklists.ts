@@ -8,10 +8,11 @@ export const INITIAL_CHECKLISTS: ChecklistCategory[] = [
             { id: 'pf1', label: 'Parking Brake: SET', checked: false },
             { id: 'pf2', label: 'Battery & Avionics: ON', checked: false },
             { id: 'pf3', label: 'Fuel Quantity: CHECKED', checked: false },
-            { id: 'pf4', label: 'Throttles: IDLE', checked: false },
-            { id: 'pf5', label: 'Engine Start: ENGAGE (Ctrl+E)', checked: false },
-            { id: 'pf6', label: 'Generators: ON (Stable N2)', checked: false },
-            { id: 'pf7', label: 'Pitot Heat: ON', checked: false },
+            { id: 'pf4', label: 'Fuel Pumps: ALL ON', checked: false },
+            { id: 'pf5', label: 'Throttles: IDLE', checked: false },
+            { id: 'pf6', label: 'Engine Start: ENGAGE (Ctrl+E)', checked: false },
+            { id: 'pf7', label: 'Generators: ON (Stable N2)', checked: false },
+            { id: 'pf8', label: 'Pitot Heat: ON (Shift+H)', checked: false },
         ]
     },
     {
@@ -44,13 +45,14 @@ export const INITIAL_CHECKLISTS: ChecklistCategory[] = [
         id: 'descent',
         title: '4. DESCENT & APPROACH',
         items: [
-            { id: 'd1', label: 'Altimeter: SYNC to Local (B)', checked: false },
-            { id: 'd2', label: 'Auto-Brake: SET (1-3)', checked: false },
-            { id: 'd3', label: 'Speed: REDUCE to 210 kts', checked: false },
-            { id: 'd4', label: 'NAV1 Radio: TUNED ILS', checked: false },
-            { id: 'd5', label: 'Course (CRS): SET Runway Hdg', checked: false },
-            { id: 'd6', label: 'Spoilers: ARM (Shift+/)', checked: false },
-            { id: 'd7', label: 'Landing Lights: ON (<10k ft)', checked: false },
+            { id: 'd1', label: 'Engine Anti-Ice: ON (H) (if <10°C)', checked: false },
+            { id: 'd2', label: 'Altimeter: SYNC to Local (B)', checked: false },
+            { id: 'd3', label: 'Auto-Brake: SET (1-3)', checked: false },
+            { id: 'd4', label: 'Speed: REDUCE to 210 kts', checked: false },
+            { id: 'd5', label: 'NAV1 Radio: TUNED ILS', checked: false },
+            { id: 'd6', label: 'Course (CRS): SET Runway Hdg', checked: false },
+            { id: 'd7', label: 'Spoilers: ARM (Shift+/)', checked: false },
+            { id: 'd8', label: 'Landing Lights: ON (<10k ft)', checked: false },
         ]
     },
     {
